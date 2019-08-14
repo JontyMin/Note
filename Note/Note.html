@@ -1,0 +1,128 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+	<TITLE></TITLE>
+
+	<SCRIPT language="javascript">
+
+		window.addEventListener("load", function () { 
+			var url = "Note.ashx";
+			MyAjax("get", url, function (c) {
+				var data = JSON.parse(c);
+				for (var row in data) {
+					var span = document.createElement("span");
+					var nametext = document.createTextNode(data[row]["msgName"] + "说：");
+					span.appendChild(nametext);
+					var p = document.createElement("p");
+					var messagetext = document.createTextNode(data[row]["msgContent"]);
+					p.appendChild(messagetext);
+					var li = document.createElement("li");
+					li.appendChild(span);
+					li.appendChild(p);
+
+					document.getElementById("lyList").appendChild(li);
+				}
+
+				});
+
+			document.getElementById("b").onclick = function () {
+				//获得留言的名字
+				var name = document.getElementById("txtName").value;
+				var message = document.getElementById("txtContent").value;
+				var url = "Note.ashx?name=" + name + "&message=" + message + "";
+				MyAjax("get", url, function (c) {
+					if (c > 0) {
+						//alert("插入成功");
+						var span = document.createElement("span");
+						var nametext = document.createTextNode(name + "说：");
+						span.appendChild(nametext);
+						var p = document.createElement("p");
+						var messagetext = document.createTextNode(message);
+						p.appendChild(messagetext);
+						var li = document.createElement("li");
+						li.appendChild(span);
+						li.appendChild(p);
+
+						document.getElementById("lyList").appendChild(li);
+					}
+				
+				});
+
+
+					}
+
+
+			
+			
+
+
+		});
+
+	</SCRIPT>
+
+	<STYLE type="text/css">
+
+		span {
+			font-weight: bold;
+			font-size: 12px;
+		}
+
+		ul {
+			list-style: none;
+			border-top: 1px solid #999;
+			height: 350px;
+			overflow-x: auto;
+			overflow-y: scroll;
+		}
+
+		li {
+			border-bottom: 1px dashed #666;
+			line-height: 20px;
+		}
+
+		.txt {
+			width: 100%;
+			font-size: 11px;
+		}
+
+		.bt {
+			margin-top: 3px;
+			border: 1px solid #666;
+			padding: 2px 5px;
+			width: 100%;
+		}
+
+		label {
+			line-height: 20px;
+			font-weight: bold;
+			cursor: pointer;
+			background-color: #999;
+			color: #fff;
+			margin: 3px 0;
+			padding-left: 5px;
+			width: 100%;
+		}
+	</STYLE>
+
+</HEAD>
+<BODY>
+
+	<DIV></DIV>
+	<H1>ajax留言本</H1>
+	<UL id="lyList">
+		<LI>
+			<SPAN>IT少爷</SPAN>
+			<P>欢迎到我的博客</P>
+		</LI>
+	</UL>
+	<H2>消息</H2><LABEL for="text">名字</LABEL><INPUT id="txtName" class="txt" onfocus="this.select();"
+												 name="text" value="游客" type="text"><BR><LABEL>填写内容</LABEL><TEXTAREA id="txtContent" class="txt" onfocus="this.select();" rows="4">    请输入要说的内容..............    
+    
+    </TEXTAREA><BR><INPUT id="b" class="bt" value="点击这里发送您的信息" type="button">
+	<script src="js/json.js"></script>
+	<script src="js/MyAjax.js"></script>
+</BODY>
+
+</HTML>
